@@ -5,4 +5,4 @@ Sitefinity Feather custom DynamicContentController using inheritance. Combines c
 
 ![alt text][img]
 
-[img]: https://github.com/nzagorchev/Sitefinity.MvcDynamicContentControllerCustom/tree/master/media/mvc-dynamic-content-controller.gif "Widget"
+[img]: https://github.com/nzagorchev/Sitefinity.MvcDynamicContentControllerCustom/blob/master/media/mvc-dynamic-content-controller.gif "Widget"
