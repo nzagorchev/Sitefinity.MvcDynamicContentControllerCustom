@@ -1,0 +1,67 @@
+﻿@model Telerik.Sitefinity.Frontend.DynamicContent.Mvc.Models.DynamicContentListViewModel
+
+@using Telerik.Sitefinity.Frontend.DynamicContent.WidgetTemplates.Fields.Helpers;
+@using Telerik.Sitefinity;
+@using Telerik.Sitefinity.Data.ContentLinks;
+@using Telerik.Sitefinity.Frontend.Mvc.Helpers;
+@using Telerik.Sitefinity.Frontend.Mvc.Models;
+@using Telerik.Sitefinity.Web.DataResolving;
+@using Telerik.Sitefinity.Model.ContentLinks;
+@using Telerik.Sitefinity.Modules.Pages;
+
+@Html.Script(ScriptRef.JQuery, "top", false)
+@Html.Script(Url.Content("~/ResourcePackages/Bootstrap/assets/dist/js/bootstrap.min.js"), "top")
+
+<style>
+    .dropdown {
+        display: inline-block;
+    }
+</style>
+
+<div class="dropdown">
+    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+        Filter By Year
+  <span class="caret"></span>
+    </button>
+    <ul id="years" class="dropdown-menu">
+        <li><a data-value='0' href="@Url.Action("Index", "DynamicContentControllerCustom")">All</a></li>
+        @for (int i = 0; i < 5; i++)
+        {
+            int year = DateTime.Now.Year - i;
+            <li><a data-value='@year' href="@Url.Action("FilterByYear", "DynamicContentControllerCustom", new { year = year })">@year</a></li>           
+        }
+    </ul>
+</div>
+
+<div class="@Model.CssClass">
+    <ul>
+        @foreach (var item in Model.Items)
+        {
+            var navigateUrl = HyperLinkHelpers.GetDetailPageUrl(item, ViewBag.DetailsPageId, ViewBag.OpenInSamePage, Model.UrlKeyPrefix);
+            <li @Html.InlineEditingAttributes(Model.ProviderName, Model.ContentType.FullName, (Guid)item.Fields.Id)>
+
+
+                <h3>
+                    <a @Html.InlineEditingFieldAttributes("Title", "ShortText") href="@navigateUrl">
+                        @item.Fields.Title
+                    </a>
+                </h3>
+                <div>
+                    @item.GetDateTime("PublicationDate", "MMM d, yyyy, HH:mm tt")
+                    @Html.CommentsCount((string)navigateUrl, item.DataItem)
+                </div>
+            </li>
+        }
+    </ul>
+
+    @if (Model.ShowPager)
+    {
+        @Html.Action("Index", "ContentPager", new
+   {
+       currentPage = Model.CurrentPage,
+       totalPagesCount = Model.TotalPagesCount.Value,
+       redirectUrlTemplate = ViewBag.RedirectPageUrlTemplate
+   })
+    }
+
+</div>
