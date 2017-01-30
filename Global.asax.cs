@@ -38,6 +38,10 @@ namespace SitefinityWebApp
         private void Bootstrapper_Bootstrapped(object sender, EventArgs e)
         {
             FrontendModule.Current.DependencyResolver.Rebind<IDynamicContentModel>().To<DynamicContentModelCustom>();
+			
+			ObjectFactory.Container.RegisterType<ISitefinityControllerFactory, DynamicContentControllerFactory>(new ContainerControlledLifetimeManager());
+            var factory = ObjectFactory.Resolve<ISitefinityControllerFactory>();
+            ControllerBuilder.Current.SetControllerFactory(factory);
         }
 
         protected void Session_Start(object sender, EventArgs e)
